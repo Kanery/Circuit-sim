@@ -18,14 +18,12 @@ int main (int argc, char* argv[]){
 	tvar[i].name = (char *) malloc (sizeof(char) * 11);
 	for (i = 0; i < 100; i++){
 		instructions[i].gate = (char *) malloc (sizeof(char) * 11);
-		instructions[i].var = (char *) malloc (sizeof(char) * 50);
+		instructions[i].vari = malloc(100 * sizeof(char *));
 	}
-	
-	
+
 	readInputs(argv[1], numInput, instructions, var, tvar);
 	readStates(argv[2], var);
-	
-	
+
 	
 	
 	printer(var, tvar, instructions);
@@ -71,7 +69,7 @@ void readInputs(char* name, int numInput, instruct* instructions, block* var, bl
 			
 			for(varcount = 0; varcount < 3; varcount++){
 				fscanf(inputtext, "%s", &str);
-				strcpy(instructions[varcount].var, str);
+				strcpy(instructions[varcount].vari, str);
 			}
 		}
 		if ((strcmp(str, "OR")) == 0){
@@ -80,7 +78,7 @@ void readInputs(char* name, int numInput, instruct* instructions, block* var, bl
 			
 			for(varcount = 0; varcount < 3; varcount++){
 				fscanf(inputtext, "%s", &str);
-				strcpy(instructions[varcount].var, str);
+				strcpy(instructions[varcount].vari, str);
 			}
 		}
 	}
@@ -102,7 +100,6 @@ void readStates(char* name, block* var){
 
 	while (fscanf(statetext, "%s", &val) != EOF){
 		state = atoi(val);
-		/*printf("State is: %d\n", state);*/
 		var[count].state = state;
 		count++;
 	}
@@ -125,10 +122,11 @@ void printer(block* var, block* tvar, instruct* instructions){
 	}
 	printf("--Printing Logic Operations--\n");
 	for (i = 0; i < 100; i++){
+		
 		if (!instructions[i].gate || strcmp(instructions[i].gate, "") == 0)
 		break;
-		printf("%s\n", instructions[i].gate);
-		
+		printf("%s ", instructions[i].gate);
+		printf("%s\n", instructions[i].vari);
 	}
 	
 }

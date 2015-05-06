@@ -13,7 +13,7 @@ typedef struct inputblock{
 typedef struct instructionblock{
 	
 	char* gate;
-	char* var;
+	char* vari;
 	
 }instruct;
 
