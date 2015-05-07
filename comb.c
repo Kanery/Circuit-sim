@@ -39,7 +39,7 @@ void readInputs(char* name, int numInput, instruct* instructions, block* var, bl
 	
 	FILE *inputtext;
 	char str[11];
-	int i, j, varcount;
+	int i, j, varcount, tvarflag;
 	int count, tvarcount = 0;
 	
 	inputtext = fopen(name, "r");
@@ -70,9 +70,9 @@ void readInputs(char* name, int numInput, instruct* instructions, block* var, bl
 		}
 		if ((strcmp(str, "NOT")) == 0){
 			strcpy(instructions[count].gate, str);
-			instructions[count].numVari = 2;
-			for(i = 0; i < instructions[count].numVari; i++){
-				int tvarflag = 0;
+			instructions[count].numVari = 1;
+			for(i = 0; i < instructions[count].numVari + 1; i++){
+				tvarflag = 0;
 				fscanf(inputtext, "%s", &str);
 				if (islower(str[0])){
 					for (j = 0; j < 26; j++){
@@ -92,18 +92,44 @@ void readInputs(char* name, int numInput, instruct* instructions, block* var, bl
 		}
 		if ((strcmp(str, "AND")) == 0){
 			strcpy(instructions[count].gate, str);
-			instructions[count].numVari = 3;
-			for(i = 0; i < instructions[count].numVari; i++){
+			instructions[count].numVari = 2;
+			for(i = 0; i < instructions[count].numVari + 1; i++){
+				tvarflag = 0;
 				fscanf(inputtext, "%s", &str);
+				if (islower(str[0])){
+					for (j = 0; j < 26; j++){
+						if(strcmp(tvar[j].name, str) == 0){
+							tvarflag = 1;
+							break;
+						}
+					}
+					if(!tvarflag){
+						strcpy(tvar[tvarcount].name, str);
+						tvarcount++;
+					}
+				}
 				strcpy(instructions[count].vari[i], str);
 			}
 			count++;
 		}
 		if ((strcmp(str, "OR")) == 0){
 			strcpy(instructions[count].gate, str);
-			instructions[count].numVari = 3;
-			for(i = 0; i < instructions[count].numVari; i++){
+			instructions[count].numVari = 2;
+			for(i = 0; i < instructions[count].numVari + 1; i++){
+				tvarflag = 0;
 				fscanf(inputtext, "%s", &str);
+				if (islower(str[0])){
+					for (j = 0; j < 26; j++){
+						if(strcmp(tvar[j].name, str) == 0){
+							tvarflag = 1;
+							break;
+						}
+					}
+					if(!tvarflag){
+						strcpy(tvar[tvarcount].name, str);
+						tvarcount++;
+					}
+				}
 				strcpy(instructions[count].vari[i], str);
 			}
 			count++;
@@ -113,7 +139,20 @@ void readInputs(char* name, int numInput, instruct* instructions, block* var, bl
 			fscanf(inputtext, "%s", &str);
 			instructions[count].numVari = atoi(str);
 			for(i = 0; i < (instructions[count].numVari + pow(2, instructions[count].numVari)); i++){
+				tvarflag = 0;
 				fscanf(inputtext, "%s", &str);
+				if (islower(str[0])){
+					for (j = 0; j < 26; j++){
+						if(strcmp(tvar[j].name, str) == 0){
+							tvarflag = 1;
+							break;
+						}
+					}
+					if(!tvarflag){
+						strcpy(tvar[tvarcount].name, str);
+						tvarcount++;
+					}
+				}
 				strcpy(instructions[count].vari[i], str);
 			}
 			count++;
@@ -123,7 +162,20 @@ void readInputs(char* name, int numInput, instruct* instructions, block* var, bl
 			fscanf(inputtext, "%s", &str);
 			instructions[count].numVari = atoi(str);
 			for(i = 0; i < (instructions[count].numVari + (log10(instructions[count].numVari) / log10(2)) + 1); i++){
+				tvarflag = 0;
 				fscanf(inputtext, "%s", &str);
+				if (islower(str[0])){
+					for (j = 0; j < 26; j++){
+						if(strcmp(tvar[j].name, str) == 0){
+							tvarflag = 1;
+							break;
+						}
+					}
+					if(!tvarflag){
+						strcpy(tvar[tvarcount].name, str);
+						tvarcount++;
+					}
+				}
 				strcpy(instructions[count].vari[i], str);
 			}
 			count++;
@@ -159,13 +211,13 @@ void printer(block* var, block* tvar, instruct* instructions){
 	for (i = 0; i < 26; i++){
 		if (!var[i].name || strcmp(var[i].name, "") == 0)
 		break;
-		printf("var[%d] is: %s, %d\n", i, var[i].name, var[i].state);
+		printf("var[%d] is: %s: %d\n", i, var[i].name, var[i].state);
 	}
 	printf("--Printing Temporary Variables--\n");
 	for (i = 0; i < 26; i++){
 		if (!tvar[i].name || strcmp(tvar[i].name, "") == 0)
 		break;
-		printf("tvar[%d] is: %s\n", i, tvar[i].name, tvar[i].state);
+		printf("tvar[%d] is: %s: %d\n", i, tvar[i].name, tvar[i].state);
 	}
 	printf("--Printing Logic Operations--\n");
 	for (i = 0; i < 100; i++){
@@ -181,6 +233,5 @@ void printer(block* var, block* tvar, instruct* instructions){
 	}
 	
 }
-
 
 
