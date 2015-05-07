@@ -1,3 +1,5 @@
+#include <ctype.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,8 +14,9 @@ typedef struct inputblock{
 
 typedef struct instructionblock{
 	
+	int numVari;
 	char* gate;
-	char* vari;
+	char** vari;
 	
 }instruct;
 

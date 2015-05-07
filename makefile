@@ -1,5 +1,5 @@
 all:
-	gcc -o comb comb.c
+	gcc -o comb comb.c -lm
 	
 clean:
 	rm comb
