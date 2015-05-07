@@ -39,8 +39,8 @@ void readInputs(char* name, int numInput, instruct* instructions, block* var, bl
 	
 	FILE *inputtext;
 	char str[11];
-	int i, temp, varcount;
-	int count = 0;
+	int i, j, varcount;
+	int count, tvarcount = 0;
 	
 	inputtext = fopen(name, "r");
 	
@@ -72,7 +72,20 @@ void readInputs(char* name, int numInput, instruct* instructions, block* var, bl
 			strcpy(instructions[count].gate, str);
 			instructions[count].numVari = 2;
 			for(i = 0; i < instructions[count].numVari; i++){
+				int tvarflag = 0;
 				fscanf(inputtext, "%s", &str);
+				if (islower(str[0])){
+					for (j = 0; j < 26; j++){
+						if(strcmp(tvar[j].name, str) == 0){
+							tvarflag = 1;
+							break;
+						}
+					}
+					if(!tvarflag){
+						strcpy(tvar[tvarcount].name, str);
+						tvarcount++;
+					}
+				}
 				strcpy(instructions[count].vari[i], str);
 			}
 			count++;
